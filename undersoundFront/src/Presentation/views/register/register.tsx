@@ -2,8 +2,14 @@ import React from 'react'
 import { Image, Keyboard, Pressable, Text, TextInput, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { MyColors } from '../../theme/AppTheme';
 import { RoundedButton } from '../../components/RoundedButton';
+import useViewModel from './ViewModel';
+import styles from './Styles'
+import { CustomTextInput } from '../../components/CustomTextInput';
 
 export const RegisterScreen = () => {
+
+    const {name, email, phone, city, password, confirmPassword, onChange, register } = useViewModel();
+
     return (    
     <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -18,141 +24,68 @@ export const RegisterScreen = () => {
 
                 <Text style= {styles.formText}>Registrate</Text>
             
-                <View style = {styles.formInput}>
-                    <Image
-                        style = {styles.formIcon}
-                        source={ require('../../../../assets/user.png')}
-                    />                
-                    <TextInput 
-                        style = {styles.formTextInput}
-                        placeholder='Nombre Completo'
-                        keyboardType='default'
+                <CustomTextInput
+                    placeHolder='Nombre Completo'
+                    keyboardType='default'
+                    image={ require('../../../../assets/user.png') }
+                    property='name'
+                    onChangeText={ onChange }
+                    value={ name}
                     />
-                </View>
 
-                <View style = {styles.formInput}>
-                    <Image
-                        style = {styles.formIcon}
-                        source={ require('../../../../assets/email.png')}
-                    />                
-                    <TextInput 
-                        style = {styles.formTextInput}
-                        placeholder='Email'
-                        keyboardType='email-address'
+                <CustomTextInput
+                    placeHolder='Email'
+                    keyboardType='email-address'
+                    image={ require('../../../../assets/email.png') }
+                    property='email'
+                    onChangeText={ onChange }
+                    value={ email }
                     />
-                </View>
 
-                <View style = {styles.formInput}>
-                    <Image
-                        style = {styles.formIcon}
-                        source={ require('../../../../assets/phone.png')}
-                    />                
-                    <TextInput 
-                        style = {styles.formTextInput}
-                        placeholder='Telefono'
-                        keyboardType='numeric'
+                <CustomTextInput
+                    placeHolder='Telefono'
+                    keyboardType='numeric'
+                    image={ require('../../../../assets/phone.png') }
+                    property='phone'
+                    onChangeText={ onChange }
+                    value={ phone }
                     />
-                </View>
 
-                <View style = {styles.formInput}>
-                    <Image
-                        style = {styles.formIcon}
-                        source={ require('../../../../assets/location.png')}
-                    />                
-                    <TextInput 
-                        style = {styles.formTextInput}
-                        placeholder='Ciudad'
-                        keyboardType='default'
+                <CustomTextInput
+                    placeHolder='Ciudad'
+                    keyboardType='default'
+                    image={ require('../../../../assets/location.png') }
+                    property='city'
+                    onChangeText={ onChange }
+                    value={ city }
                     />
-                </View>
 
-                <View style = {styles.formInput}>
-                    <Image
-                        style = {styles.formIcon}
-                        source={ require('../../../../assets/password.png')}
-                    />                
-                    <TextInput 
-                        style = {styles.formTextInput}
-                        placeholder='Contraseña'
-                        keyboardType='default'
-                        secureTextEntry={true}
+                <CustomTextInput
+                    placeHolder='Contraseña'
+                    keyboardType='default'
+                    image={ require('../../../../assets/password.png') }
+                    property='password'
+                    onChangeText={ onChange }
+                    value={ password }
+                    secureTextEntry= {true}
                     />
-                </View>
 
-                <View style = {styles.formInput}>
-                    <Image
-                        style = {styles.formIcon}
-                        source={ require('../../../../assets/noEye.png')}
-                    />                
-                    <TextInput 
-                        style = {styles.formTextInput}
-                        placeholder='Confirmar contraseña'
-                        keyboardType='default'
-                        secureTextEntry={true}
+                <CustomTextInput
+                    placeHolder='Confirmar contraseña'
+                    keyboardType='default'
+                    image={ require('../../../../assets/noEye.png') }
+                    property='confirmPassword'
+                    onChangeText={ onChange }
+                    value={ confirmPassword }
+                    secureTextEntry= {true}
                     />
-                </View>
 
                 <View style = {{marginTop: 30}}>
-                    <RoundedButton text='CONFIRMAR' onPress={() => (console.log('entranding'))} />
+                    <RoundedButton text='CONFIRMAR' onPress={() => register() } />
                 </View>        
             </View>
         </Pressable>
     </KeyboardAvoidingView>
     );
 }
-        
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'black'
-    },
-    imageBackground: {
-        width: '100%',
-        height: '100%',
-        opacity: 0.8,
-        bottom: '35%'
-    },
-    form: {
-        width: '100%',
-        height: '75%',
-        backgroundColor: MyColors.secondary,
-        position: 'absolute',
-        bottom: 0,
-        borderTopLeftRadius: 40,
-        borderTopRightRadius: 40,
-        padding:30
-    },
-    formText:{
-        fontWeight: 'bold',
-        fontSize: 16
-    },
-    formIcon:{
-        width: 30,
-        height: 30,
-        marginTop: 5
-    },
-    formInput:{
-        flexDirection: 'row',
-        marginTop: 30
-    },
-    formTextInput: {
-        flex: 1,
-        borderBottomWidth: 1,
-        borderBottomColor: '#979B8D',
-        marginLeft: 15
-    },
-    formRegister:{
-        flexDirection: 'row',
-        justifyContent: 'center',
-        marginTop: 30
-    },
-    formRegisterText: {
-        fontStyle: 'italic',
-        color: '#5C7457',
-        borderBottomWidth: 1,
-        borderBottomColor: '#5C7457',
-        fontWeight: 'bold',
-        marginLeft: 10
-    },
-
-});
+    
