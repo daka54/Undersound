@@ -6,10 +6,10 @@ const controller = require('./index');
 
 const router = express.Router();
 
-router.get('/', getAll);
+router.get('/getAll', getAll);
 router.get('/:id', getById);
-router.post('/',security(), add);
-router.put('/', security(),deleteUser);
+router.post('/add',security(), add);
+router.put('/deleteUser', security(),deleteUser);
 
 async function getAll( req, res){
     try {

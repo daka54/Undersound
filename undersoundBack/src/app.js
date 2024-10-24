@@ -1,6 +1,8 @@
 const express = require('express');
 const morgan = require('morgan');
 const config = require('./config');
+const http = require('http');
+const cors = require('cors');
 
 const users = require('./modules/users/routes');
 const usersAuth = require('./modules/usersAuth/routes');
@@ -13,6 +15,7 @@ const app = express();
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(cors());
 
 //configuracion
 app.set('port', config.app.port);

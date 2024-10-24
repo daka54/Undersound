@@ -21,7 +21,10 @@ module.exports = function (dbInyected) {
         const userAuth = {
             id: body.id,
             name: body.name,
-            active: body.active
+            email: body.email,
+            phone: body.phone,
+            city: body.city,
+            active: 1,            
         }
 
         const response = await db.add(TABLE, userAuth);
@@ -34,10 +37,10 @@ module.exports = function (dbInyected) {
         }
 
         var response2 = '';
-        if(body.user || body.password){
+        if(body.email || body.password){
             response2 = await auth.add({
                 id: insertId,
-                user: body.user,
+                user: body.email,
                 password: body.password
             });
         }

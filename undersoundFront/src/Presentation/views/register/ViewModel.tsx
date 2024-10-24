@@ -1,8 +1,10 @@
 import React, {useState} from 'react'
+import { ApiUndersound } from '../../../Data/sources/remote/api/ApiUndersound';
 
 const RegisterViewModel = () => {
     
     const [values, setvalues] = useState({
+        id: 0,
         name: '',
         email: '',
         phone: '',
@@ -15,8 +17,18 @@ const RegisterViewModel = () => {
         setvalues({ ...values, [property]: value})
     };
 
-    const register = () => {
-        console.log(JSON.stringify(values));        
+    const register = async () => {
+        try {
+            
+            const response = await ApiUndersound.post('/usersauth/add', values);
+            console.log('RESPONDE:' + JSON.stringify(response));
+            
+
+        } catch (error) {
+            console.log('ERROR' + error);
+            
+        }
+      
     }
 
     return {
