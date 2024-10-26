@@ -7,7 +7,7 @@ const controller = require('./index');
 const router = express.Router();
 
 router.get('/getAll', getAll);
-router.get('/:id', getById);
+router.get('/getById/:id', getById);
 router.post('/add',security(), add);
 router.put('/deleteUser', security(),deleteUser);
 

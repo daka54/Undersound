@@ -5,18 +5,21 @@ module.exports = function (dbInyected) {
     
     let db = dbInyected;
 
-    async function login(user, password){
-        const data = await db.query(TABLE, {user: user});
-
-        return bcrypt.compare(password, data.password).
-            then(result =>{
-                if(result === true){
-                    //Generar token
-                    return auth.assignToken({ ...data})
-                }else{
-                    throw new Error('Papi mete bien la info pls');
-                }
-            })
+    async function login(user, password) {
+        const data = await db.query(TABLE, { user: user });
+    
+        // Esperar a que bcrypt.compare termine usando await
+        const result = await bcrypt.compare(password, data.password);
+        if (result === true) {
+            // Generar token
+            const token = auth.assignToken({ ...data });
+    
+            // Guardar el token en la base de datos
+            await db.add(TABLE, { id: data.id, session_token: token });
+            return token; // Retornar el token
+        } else {
+            throw new Error('Papi mete bien la info pls');
+        }
     }
 
     async function add (data) {

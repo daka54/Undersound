@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, TextInput, View, StyleSheet, Keyboard, KeyboardType } from 'react-native';
+import { Image, TextInput, View, StyleSheet, Keyboard, KeyboardType, KeyboardAvoidingView } from 'react-native';
 
 interface Props {
     image: any,

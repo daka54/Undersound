@@ -1,6 +1,5 @@
-import React from 'react'
-import { Image, Keyboard, Pressable, Text, TextInput, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
-import { MyColors } from '../../theme/AppTheme';
+import React, { useEffect } from 'react'
+import { Image, Keyboard, Pressable, Text,  View, ScrollView, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { RoundedButton } from '../../components/RoundedButton';
 import useViewModel from './ViewModel';
 import styles from './Styles'
@@ -8,20 +7,29 @@ import { CustomTextInput } from '../../components/CustomTextInput';
 
 export const RegisterScreen = () => {
 
-    const {name, email, phone, city, password, confirmPassword, onChange, register } = useViewModel();
+    const {name, email, phone, city, password, confirmPassword, errorMessage, onChange, register } = useViewModel();
 
+    useEffect(() => {
+        if (errorMessage != ''){
+            Alert.alert("Formulario invalido", errorMessage);
+        }        
+    }, [errorMessage])
+    
     return (    
-    <KeyboardAvoidingView 
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.container}>
-        <Pressable onPress={Keyboard.dismiss}>
-            <Image 
-            source = { require('../../../../assets/vinyls.jpg')} 
-            style = {styles.imageBackground}
-            />
+    <Pressable onPress={Keyboard.dismiss} style={styles.container}>
+        <Image 
+        source = { require('../../../../assets/vinyls.jpg')} 
+        style = {styles.imageBackground}
+        />
 
-            <View style = {styles.form}>
+        {/* <View style = {styles.form}> */}
+        <KeyboardAvoidingView 
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+            style={styles.form}
+            >
+            
 
+            <ScrollView contentContainerStyle={{paddingBottom:50}}>
                 <Text style= {styles.formText}>Registrate</Text>
             
                 <CustomTextInput
@@ -81,11 +89,11 @@ export const RegisterScreen = () => {
                     />
 
                 <View style = {{marginTop: 30}}>
-                    <RoundedButton text='CONFIRMAR' onPress={() => register() } />
-                </View>        
-            </View>
-        </Pressable>
-    </KeyboardAvoidingView>
+                    <RoundedButton text='CONFIRMAR' onPress={() => register()} />
+                </View>    
+            </ScrollView>    
+        </KeyboardAvoidingView>
+    </Pressable>
     );
 }
     
