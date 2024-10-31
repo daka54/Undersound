@@ -1,18 +1,38 @@
-import React, {useState} from 'react'
-import { Image, Keyboard, Pressable, Text, TextInput, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import React, {useState, useEffect} from 'react'
+import { Image, Keyboard, Pressable, Text, TextInput, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { RoundedButton } from '../../components/RoundedButton';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack'
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack'
 import { RootStackParamList } from '../../../../App';
 import useViewModel from './ViewModel';
 import styles from './Styles'
 import { CustomTextInput } from '../../components/CustomTextInput';
+import Toast from 'react-native-toast-message';
 
-export const HomeScreen = () => {
+interface Props extends StackScreenProps<RootStackParamList, 'HomeScreen'>{};
 
-    const { email, password, onChange } = useViewModel();
+export const HomeScreen = ({navigation, route}: Props) => {
 
-    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const { email, password, errorMessage, user, onChange, login } = useViewModel();
+
+    
+    useEffect(() => {
+        if (errorMessage !== '') {
+          Toast.show({
+            type: 'error',
+            text1: 'Formulario inválido',
+            text2: errorMessage,
+            position: 'bottom'
+          });
+        }
+    }, [errorMessage]);
+    
+    useEffect(() => {
+        if(user?.id !== null && user?.id !== undefined) {
+            navigation.replace('ProfileInfoScreen');
+        }
+    }, [user])
+    
 
     return (
     <KeyboardAvoidingView 
@@ -52,10 +72,7 @@ export const HomeScreen = () => {
                 />
 
                 <View style = {{marginTop: 30}}>
-                    <RoundedButton text='ENTRAR' onPress={() => {
-                        console.log('Email:' + email);
-                        console.log('Password:' + password);
-                    }} />
+                    <RoundedButton text='ENTRAR' onPress={() => login()} />
                 </View>
 
                 <View style = { styles.formRegister}>

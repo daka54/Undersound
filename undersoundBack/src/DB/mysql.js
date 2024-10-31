@@ -74,10 +74,23 @@ function query(table, consult){
     });
 }
 
+function queryWithJoin(table, joinTable, joinCondition, consult) {
+    return new Promise((resolve, reject) => {
+        // Construir la consulta SQL con JOIN
+        const sql = `SELECT * FROM ${table} INNER JOIN ${joinTable} ON ${joinCondition} WHERE ?`;
+        
+        connection.query(sql, consult, (error, result) => {
+            return error ? reject(error) : resolve(result[0]);
+        });
+    });
+}
+
+
 module.exports = {
     getById,
     getAll,
     add,
     deleteUser,
-    query
+    query,
+    queryWithJoin,
 }

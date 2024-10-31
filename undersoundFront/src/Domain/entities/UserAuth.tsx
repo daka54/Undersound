@@ -4,6 +4,7 @@ export interface UserAuth {
     email:           string;
     phone:           string;
     city:            string;
-    password:        string;
-    confirmPassword: string;
+    password?:        string;
+    confirmPassword?: string;
+    token?:           string;
 }

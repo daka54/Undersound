@@ -1,0 +1,52 @@
+# Node modules
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependencias del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Directorios de caché
+.cache/
+.expo/
+.expo-shared/
+
+# Archivos de entorno
+.env
+
+# Configuración de editor de texto
+.vscode/
+
+# Archivos específicos de React Native
+*.xcworkspace
+*.xcuserstate
+*.xcuserdatad
+*.swp
+*.swo
+build/
+android/app/build/
+android/.gradle/
+android/.idea/
+android/.settings/
+android/.cxx/
+
+# Archivos de configuración y binarios
+*.keystore
+*.jks
+
+# Artifacts de iOS
+ios/Pods/
+ios/build/
+ios/DerivedData/
+
+# Archivos de cobertura y compilación
+coverage/
+dist/
+
+# Archivos de debugging
+debug/
