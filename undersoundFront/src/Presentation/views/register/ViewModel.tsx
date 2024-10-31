@@ -6,6 +6,7 @@ import { RegisterAuthUseCase } from '../../../Domain/useCases/auth/RegisterAuth'
 const RegisterViewModel = () => {
     
     const [errorMessage, setErrorMessage] = useState('')
+    const [sucessMessage, setSucessMessage] = useState('')
     const [values, setvalues] = useState({
         id: 0,
         name: '',
@@ -23,6 +24,8 @@ const RegisterViewModel = () => {
     const register = async () => {
         if (isValidForm()){
             const response = await RegisterAuthUseCase(values);
+            setSucessMessage(response.body);
+            setTimeout(() => setSucessMessage(''), 100);
             console.log('RESULT: ' + JSON.stringify(response));
         }        
     }
@@ -63,7 +66,8 @@ const RegisterViewModel = () => {
         ...values,
         onChange,
         register,
-        errorMessage
+        errorMessage,
+        sucessMessage
     }
 }
 

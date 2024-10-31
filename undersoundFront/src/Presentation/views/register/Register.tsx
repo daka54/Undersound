@@ -5,10 +5,14 @@ import useViewModel from './ViewModel';
 import styles from './Styles'
 import { CustomTextInput } from '../../components/CustomTextInput';
 import Toast from 'react-native-toast-message';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../../App';
 
-export const RegisterScreen = () => {
+interface Props extends StackScreenProps<RootStackParamList, 'RegisterScreen'>{};
 
-    const {name, email, phone, city, password, confirmPassword, errorMessage, onChange, register } = useViewModel();
+export const RegisterScreen = ({navigation, route}: Props) => {
+
+    const {name, email, phone, city, password, confirmPassword, sucessMessage,errorMessage, onChange, register } = useViewModel();
 
     useEffect(() => {
         if (errorMessage !== '') {
@@ -20,6 +24,18 @@ export const RegisterScreen = () => {
           });
         }
     }, [errorMessage]);
+
+    useEffect(() => {
+        if (sucessMessage !== '') {
+          Toast.show({
+            type: 'success',
+            text1: 'Bienvenido',
+            text2: sucessMessage,
+            position: 'bottom'
+          });
+          navigation.navigate('HomeScreen');
+        }        
+    }, [sucessMessage]);
     
     return (    
     <Pressable onPress={Keyboard.dismiss} style={styles.container}>
