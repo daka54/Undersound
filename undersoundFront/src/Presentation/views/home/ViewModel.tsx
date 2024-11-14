@@ -14,7 +14,7 @@ const HomeViewModel = () => {
     });
 
     const { user, getUserSession } = useUserLocal();
-    console.log('USUARIO DE SESION: ' + JSON.stringify(user));
+    //console.log('USUARIO DE SESION: ' + JSON.stringify(user));
     
     
     const onChange = (property: string, value: any) => {

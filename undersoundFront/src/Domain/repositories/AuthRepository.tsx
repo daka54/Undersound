@@ -4,6 +4,5 @@ import { UserAuth } from "../entities/UserAuth";
 export interface AuthRepository {
 
     register( user: UserAuth): Promise<ResponseAPIUndersound>
-    login( email: string, password: string): Promise<ResponseAPIUndersound>
-    
+    login( email: string, password: string): Promise<ResponseAPIUndersound>    
 }

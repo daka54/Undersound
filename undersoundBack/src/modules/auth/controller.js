@@ -1,31 +1,40 @@
-const TABLE = 'auth';
-const joinTable = 'usersauth';
 const auth = require('../../authentication')
+const tables= require('../../DB/tables');
 const bcrypt = require('bcrypt');
 module.exports = function (dbInyected) {
     
     let db = dbInyected;
 
     async function login(user, password) {
-        const data = await db.query(TABLE, { user: user });
+        const data = await db.query(tables.auth, { user: user });
     
         // Esperar a que bcrypt.compare termine usando await
         const result = await bcrypt.compare(password, data.password);
         if (result === true) {
             // Generar token
             const token = auth.assignToken({ ...data });
-            const fullUser = await db.queryWithJoin(TABLE, joinTable,'auth.id = usersauth.id', { user: user });
+            const fullUser = await db.queryWithJoin(tables.auth, tables.usersauth,'auth.id = usersauth.id', { user: user });
+            const roles = await db.queryWithJoin(tables.users_has_roles,tables.roles,'users_has_roles.id_rol = roles.id' ,{ id_user: data.id });
+            const simplifiedRoles = roles.map(role => ({
+                id: String(role.id_rol),
+                name: role.name,
+                image: role.image,
+                route: role.route
+            }));
+            
             const response = {
                 id: data.id,
-                name: fullUser.name,
+                name: fullUser[0].name,
                 email: data.user,
-                phone: fullUser.phone,
-                city: fullUser.city,
-                token
+                phone: fullUser[0].phone,
+                city: fullUser[0].city,
+                image: fullUser[0].image,
+                token,
+                roles: simplifiedRoles
             }
     
             // Guardar el token en la base de datos
-            await db.add(TABLE, { id: data.id, session_token: token });
+            await db.add(tables.auth, { id: data.id, session_token: token });
             return response; // Retornar el token
         } else {
             throw new Error('Papi mete bien la info pls');
@@ -45,7 +54,7 @@ module.exports = function (dbInyected) {
             authData.password = await bcrypt.hash(data.password.toString(), 5);
         }
 
-        return db.add(TABLE, authData);
+        return db.add(tables.auth, authData);
     }
     
     

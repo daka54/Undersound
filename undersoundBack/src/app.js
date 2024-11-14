@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const config = require('./config');
 const http = require('http');
 const cors = require('cors');
+const multer = require('multer');
 
 const users = require('./modules/users/routes');
 const usersAuth = require('./modules/usersAuth/routes');
@@ -19,6 +20,10 @@ app.use(cors());
 
 //configuracion
 app.set('port', config.app.port);
+
+const upload = multer({
+    storage: multer.memoryStorage()
+})
 
 //rutas
 app.use('/api/users', users);

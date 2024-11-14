@@ -1,5 +1,6 @@
 
 const TABLE = 'usersauth';
+const TABLE_fk = 'users_has_roles';
 const auth = require('../auth');
 module.exports = function (dbInyected) {
     
@@ -24,6 +25,7 @@ module.exports = function (dbInyected) {
             email: body.email,
             phone: body.phone,
             city: body.city,
+            image: body.image,
             active: 1,            
         }
 
@@ -32,6 +34,10 @@ module.exports = function (dbInyected) {
         var insertId = 0;
         if(body.id == 0){
             insertId = response.insertId;
+            const addRol = await db.add(TABLE_fk, {
+                id_user: insertId,
+                id_rol: 2
+            });
         }else{
             insertId = body.id;
         }

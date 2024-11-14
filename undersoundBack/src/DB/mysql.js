@@ -80,7 +80,7 @@ function queryWithJoin(table, joinTable, joinCondition, consult) {
         const sql = `SELECT * FROM ${table} INNER JOIN ${joinTable} ON ${joinCondition} WHERE ?`;
         
         connection.query(sql, consult, (error, result) => {
-            return error ? reject(error) : resolve(result[0]);
+            return error ? reject(error) : resolve(result);
         });
     });
 }

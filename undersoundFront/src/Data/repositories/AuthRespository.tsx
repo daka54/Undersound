@@ -1,8 +1,9 @@
 import { AxiosError } from "axios";
 import { UserAuth } from "../../Domain/entities/UserAuth";
 import { AuthRepository } from "../../Domain/repositories/AuthRepository";
-import { ApiUndersound } from "../sources/remote/api/ApiUndersound";
+import { ApiUndersound, ApiUndersoundForImage } from "../sources/remote/api/ApiUndersound";
 import { ResponseAPIUndersound } from "../sources/remote/models/responseApiundersound";
+
 
 export class AuthRepositoryImpl implements AuthRepository {
 
@@ -36,4 +37,5 @@ export class AuthRepositoryImpl implements AuthRepository {
             return Promise.resolve(apiError);
         }
     }
+
 }

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Image, Keyboard, Pressable, Text,  View, ScrollView, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import { Image, Keyboard, Pressable, Text,  View, ScrollView, KeyboardAvoidingView, Platform, Alert, ActivityIndicator } from 'react-native';
 import { RoundedButton } from '../../components/RoundedButton';
 import useViewModel from './ViewModel';
 import styles from './Styles'
@@ -7,12 +7,13 @@ import { CustomTextInput } from '../../components/CustomTextInput';
 import Toast from 'react-native-toast-message';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../../App';
+import { MyColors } from '../../theme/AppTheme';
 
 interface Props extends StackScreenProps<RootStackParamList, 'RegisterScreen'>{};
 
 export const RegisterScreen = ({navigation, route}: Props) => {
 
-    const {name, email, phone, city, password, confirmPassword, sucessMessage,errorMessage, onChange, register } = useViewModel();
+    const {name, email, phone, city, password, confirmPassword, sucessMessage,errorMessage, loading, onChange, register, pickImage } = useViewModel();
 
     useEffect(() => {
         if (errorMessage !== '') {
@@ -48,8 +49,7 @@ export const RegisterScreen = ({navigation, route}: Props) => {
         <KeyboardAvoidingView 
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
             style={styles.form}
-            >
-            
+        >                       
 
             <ScrollView contentContainerStyle={{paddingBottom:50}}>
                 <Text style= {styles.formText}>Registrate</Text>
@@ -113,7 +113,16 @@ export const RegisterScreen = ({navigation, route}: Props) => {
                 <View style = {{marginTop: 30}}>
                     <RoundedButton text='CONFIRMAR' onPress={() => register()} />
                 </View>    
-            </ScrollView>    
+            </ScrollView>
+            {
+                loading &&
+                <ActivityIndicator 
+                style={styles.loading} 
+                size="small" 
+                color={MyColors.primary} 
+                />
+            }
+
         </KeyboardAvoidingView>
     </Pressable>
     );
