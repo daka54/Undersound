@@ -15,9 +15,8 @@ interface Props extends StackScreenProps<RootStackParamList, 'ProfileUpdateScree
 export const ProfileUpdateScreen = ({navigation, route}: Props) => {
 
     const { user } = route.params;
-    const {name, phone, city, image, sucessMessage,errorMessage, loading, onChange, update, pickImage, takePhoto, onChangeInfoUpdate } = useViewModel(user);
-    const [modalVisible, setModalVisible] = useState(false);
-    
+    const {name, phone, city, image, sucessMessage,errorMessage, loading,modalVisible, onChange, update, pickImage, takePhoto, onChangeInfoUpdate, setModalVisible } = useViewModel(user);
+        
     useEffect(() => {
         if (errorMessage !== '') {
           Toast.show({
@@ -33,7 +32,7 @@ export const ProfileUpdateScreen = ({navigation, route}: Props) => {
         if (sucessMessage !== '') {
           Toast.show({
             type: 'success',
-            text1: 'Bienvenido',
+            text1: 'Actualizado',
             text2: sucessMessage,
             position: 'bottom'
           });
@@ -42,96 +41,98 @@ export const ProfileUpdateScreen = ({navigation, route}: Props) => {
     }, [sucessMessage])
     
     
-    return (    
-    <Pressable onPress={Keyboard.dismiss} style={styles.container}>
-        <Image 
-        source = { require('../../../../../assets/vinyls.jpg')} 
-        style = {styles.imageBackground}
-        />
-
-        <View style={ styles.logoContainer}>
-            <TouchableOpacity onPress={ () => setModalVisible(true)}>
-                {
-                    image == ''
-                    ? user?.image == ''
-                        ? <Image
-                            source={ require('../../../../../assets/user.png')}
-                            style={styles.logoImage}
-                            />
-                        : <Image
-                            source={{ uri: user?.image}}
-                            style={styles.logoImage}
-                            />
-                    : <Image
-                        source={{ uri: image}}
-                        style={styles.logoImage}
-                        />
-                }
-                
-            </TouchableOpacity>
-
-
-            <Text style={styles.logoText}>Selecciona una imagen</Text>
-        </View>
-        {/* <View style = {styles.form}> */}
-        <KeyboardAvoidingView 
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
-            style={styles.form}
-        >                       
-
-            <ScrollView contentContainerStyle={{paddingBottom:50}}>
-                <Text style= {styles.formText}>Actualizar</Text>
-            
-                <CustomTextInput
-                    placeHolder='Nombre Completo'
-                    keyboardType='default'
-                    image={ require('../../../../../assets/user.png') }
-                    property='name'
-                    onChangeText={ onChange }
-                    value={ name}
-                    />
-
-                <CustomTextInput
-                    placeHolder='Telefono'
-                    keyboardType='numeric'
-                    image={ require('../../../../../assets/phone.png') }
-                    property='phone'
-                    onChangeText={ onChange }
-                    value={ phone }
-                    />
-
-                <CustomTextInput
-                    placeHolder='Ciudad'
-                    keyboardType='default'
-                    image={ require('../../../../../assets/location.png') }
-                    property='city'
-                    onChangeText={ onChange }
-                    value={ city }
-                    />
-
-
-                <View style = {{marginTop: 30}}>
-                    <RoundedButton text='CONFIRMAR' onPress={() => update()} />
-                </View>    
-            </ScrollView>
-            {
-                loading &&
-                <ActivityIndicator 
-                style={styles.loading} 
-                size="small" 
-                color={MyColors.primary} 
+    return (
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 10 : 0}
+        >
+        <ScrollView
+            contentContainerStyle={{ flexGrow: 1, paddingBottom: 50 }}
+            keyboardShouldPersistTaps="handled"
+            >
+            <Pressable onPress={Keyboard.dismiss} style={styles.container}>
+                <Image 
+                source = { require('../../../../../assets/vinyls.jpg')} 
+                style = {styles.imageBackground}
                 />
-            }
 
-        </KeyboardAvoidingView>
+                <View style={ styles.logoContainer}>
+                    <Pressable onPress={ () => setModalVisible(true)}>
+                        {
+                            image == ''
+                            ? user?.image == ''
+                                ? <Image
+                                    source={ require('../../../../../assets/user.png')}
+                                    style={styles.logoImage}
+                                    />
+                                : <Image
+                                    source={{ uri: user?.image}}
+                                    style={styles.logoImage}
+                                    />
+                            : <Image
+                                source={{ uri: image}}
+                                style={styles.logoImage}
+                                />
+                        }                    
+                    </Pressable>
+                    <Text style={styles.logoText}>Selecciona una imagen</Text>
+                </View>
+                {/* <View style = {styles.form}> */}
+                <View style={styles.form}>                
+                    <Text style= {styles.formText}>Actualizar</Text>
+                
+                    <CustomTextInput
+                        placeHolder='Nombre Completo'
+                        keyboardType='default'
+                        image={ require('../../../../../assets/user.png') }
+                        property='name'
+                        onChangeText={ onChange }
+                        value={ name }
+                        />
 
-        <ModalPickImage
-            openGallery={ pickImage }
-            openCamera={ takePhoto }
-            modalUseState = { modalVisible }
-            setModalUseState={ setModalVisible }
-        />
-    </Pressable>
+                    <CustomTextInput
+                        placeHolder='Telefono'
+                        keyboardType='numeric'
+                        image={ require('../../../../../assets/phone.png') }
+                        property='phone'
+                        onChangeText={ onChange }
+                        value={ phone }
+                        />
+
+                    <CustomTextInput
+                        placeHolder='Ciudad'
+                        keyboardType='default'
+                        image={ require('../../../../../assets/location.png') }
+                        property='city'
+                        onChangeText={ onChange }
+                        value={ city }
+                        />
+
+                    <View style = {{marginTop: 40}}>
+                        <RoundedButton text='CONFIRMAR' onPress={() => update()} />
+                    </View>    
+                    
+                    {
+                        loading &&
+                        <ActivityIndicator 
+                        style={styles.loading} 
+                        size="small" 
+                        color={MyColors.primary} 
+                        />
+                    }
+
+                </View>
+
+                <ModalPickImage
+                    openGallery={ pickImage }
+                    openCamera={ takePhoto }
+                    modalUseState = { modalVisible }
+                    setModalUseState={ setModalVisible }
+                />        
+            </Pressable>
+        </ScrollView>
+    </KeyboardAvoidingView>
     );
 }
 /*                     image == ''

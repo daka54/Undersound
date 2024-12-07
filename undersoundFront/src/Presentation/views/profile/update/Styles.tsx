@@ -14,7 +14,7 @@ const ProfileUpdateStyles = StyleSheet.create({
     },
     form: {
         width: '100%',
-        height: '50%',
+        height: '60%',
         backgroundColor: MyColors.secondary,
         position: 'absolute',
         bottom: 0,

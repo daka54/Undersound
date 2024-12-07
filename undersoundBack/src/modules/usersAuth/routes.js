@@ -12,7 +12,6 @@ const router = express.Router();
 router.get('/getAll', getAll);
 router.get('/getById/:id', getById);
 router.post('/add',security(), add);
-//router.post('/update',security(), upload.single('file'), update);
 router.post('/update', security(), upload.fields([{ name: 'file' }, { name: 'body' }]), update);
 router.put('/deleteUser', security(),deleteUser);
 

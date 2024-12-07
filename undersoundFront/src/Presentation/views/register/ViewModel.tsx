@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import { ApiUndersound } from '../../../Data/sources/remote/api/ApiUndersound';
 import { RegisterAuthUseCase } from '../../../Domain/useCases/auth/RegisterAuth';
 import * as ImagePicker from 'expo-image-picker';
+import { Linking } from 'react-native';
 
 
 const RegisterViewModel = () => {
@@ -9,6 +10,7 @@ const RegisterViewModel = () => {
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [sucessMessage, setSucessMessage] = useState('');
+    const [isChecked, setIsChecked] = useState(false);
     const [values, setvalues] = useState({
         id: 0,
         name: '',
@@ -18,8 +20,14 @@ const RegisterViewModel = () => {
         image: '',
         password: '',
         confirmPassword: '',
+        instagram: ''
     });
     const [file, setFile] = useState<ImagePicker.ImagePickerAsset>();
+
+    const handlePressTerms = () => {
+        // Aquí defines la URL a la que quieres redirigir
+        Linking.openURL('https://www.example.com/terminos-y-condiciones');
+    };
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -91,6 +99,10 @@ const RegisterViewModel = () => {
             setErrorMessage('Las contraseñas no coinciden')
             return false;
         }
+        if (!isChecked){
+            setErrorMessage('Acepta los terminos y condiciones')
+            return false;
+        }
         return true;
     }
 
@@ -102,7 +114,10 @@ const RegisterViewModel = () => {
         sucessMessage,
         pickImage,
         takePhoto,
-        loading
+        loading,
+        isChecked,
+        setIsChecked,
+        handlePressTerms
     }
 }
 

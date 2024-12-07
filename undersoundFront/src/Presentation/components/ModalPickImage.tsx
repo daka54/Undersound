@@ -30,7 +30,6 @@ export const ModalPickImage = ({openGallery, openCamera, setModalUseState, modal
                     <RoundedButton
                         onPress={ () => {
                             openGallery()
-                            setModalUseState(false)
                         }}
                         text='Galeria'                    
                     />
@@ -40,7 +39,6 @@ export const ModalPickImage = ({openGallery, openCamera, setModalUseState, modal
                     <RoundedButton
                         onPress={ () => {
                             openCamera()
-                            setModalUseState(false)
                         }}
                         text='Camara'
                     />

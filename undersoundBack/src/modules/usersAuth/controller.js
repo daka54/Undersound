@@ -26,6 +26,7 @@ module.exports = function (dbInyected) {
             phone: body.phone,
             city: body.city,
             image: body.image,
+            instagram: body.instagram,
             active: 1,            
         }
 

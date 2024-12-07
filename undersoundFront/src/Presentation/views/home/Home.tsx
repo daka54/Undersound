@@ -28,8 +28,10 @@ export const HomeScreen = ({navigation, route}: Props) => {
     }, [errorMessage]);
     
     useEffect(() => {
-        if(user?.id !== null && user?.id !== undefined) {
-            if (user.roles?.length! > 1) {
+        if(user?.id !== null && user?.id !== undefined && user?.id !== 0) {
+            if (user?.loginCount === 0) {
+                navigation.replace('QuestionaryScreen');
+            } else if (user.roles?.length! > 1) {
                 navigation.replace('RolesScreen');
             } else{
                 navigation.replace('UserTabsNavigator');

@@ -1,8 +1,9 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import { LoginAuthUseCase } from '../../../Domain/useCases/auth/loginAuth';
 import { SaveUserLocalUseCase } from '../../../Domain/useCases/userLocal/SaveUserLocal';
 import { GetUserLocalUseCase } from '../../../Domain/useCases/userLocal/GetUserLocal';
 import { useUserLocal } from '../../hooks/useUserLocal';
+import { UserContext } from '../../context/UserContext';
 
 
 const HomeViewModel = () => {
@@ -13,8 +14,9 @@ const HomeViewModel = () => {
         password:'',
     });
 
-    const { user, getUserSession } = useUserLocal();
-    //console.log('USUARIO DE SESION: ' + JSON.stringify(user));
+    //const { user, getUserSession } = useUserLocal();
+    const { user, saveUserSession } = useContext(UserContext);
+    console.log('USUARIO DE SESION: ' + JSON.stringify(user));
     
     
     const onChange = (property: string, value: any) => {
@@ -28,8 +30,7 @@ const HomeViewModel = () => {
             if(response.error){
                 setErrorMessage(response.body)
             } else {
-                await SaveUserLocalUseCase(response.body);
-                getUserSession();
+                saveUserSession(response.body);
             }
         } else {
             setTimeout(() => setErrorMessage(''), 1); // Restablece después de mostrar

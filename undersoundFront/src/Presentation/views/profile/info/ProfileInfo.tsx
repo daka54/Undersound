@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, Button, Image, Pressable, Keyboard, KeyboardAvoidingView, Platform } from 'react-native';
 import useViewModel from './ViewModel';
 import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
@@ -11,7 +11,13 @@ import { GestureHandlerRootView, TouchableOpacity } from 'react-native-gesture-h
 export const ProfileInfoScreen = () => {
 
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const { removeSession, user } = useViewModel();
+  const {  user, removeUserSession } = useViewModel();
+  
+  useEffect(() => {
+    if (user.id === 0){
+      navigation.replace('HomeScreen');
+    }
+  }, [user])
   
   return (
     
@@ -24,8 +30,7 @@ export const ProfileInfoScreen = () => {
       <Pressable
         style={ styles.logout }
         onPress={ () => {
-          removeSession();
-          navigation.replace('HomeScreen');
+          removeUserSession();          
         }}>        
         <Image 
           source = { require('../../../../../assets/logout.png')} 
@@ -34,10 +39,15 @@ export const ProfileInfoScreen = () => {
       </Pressable>      
 
       <View style = {styles.logoContainer}>
-        <Image 
-          source = {{uri: user?.image }} 
-          style = {styles.logoImage}
-        />
+        { 
+          user?.image !== '' 
+            &&
+          <Image 
+            source = {{uri: user?.image }} 
+            style = {styles.logoImage}
+          />
+        }
+        
       </View>
 
       <View style = {styles.form}>

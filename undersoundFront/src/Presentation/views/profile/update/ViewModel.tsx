@@ -1,9 +1,10 @@
-import React, {useState} from 'react'
+import React, {useContext, useState} from 'react'
 import { ApiUndersound } from '../../../../Data/sources/remote/api/ApiUndersound';
 import { UpdateInfoProfileUseCase } from '../../../../Domain/useCases/user/UpdateUser';
 import * as ImagePicker from 'expo-image-picker';
 import { useUserLocal } from '../../../hooks/useUserLocal';
 import { UserAuth } from '../../../../Domain/entities/UserAuth';
+import { UserContext } from '../../../context/UserContext';
 
 
 const ProfileUpdateViewModel = (user: UserAuth) => {
@@ -14,11 +15,12 @@ const ProfileUpdateViewModel = (user: UserAuth) => {
     const [file, setFile] = useState<ImagePicker.ImagePickerAsset>();
     const [values, setValues] = useState(user);
     const { getUserSession } = useUserLocal();
-    
+    const [modalVisible, setModalVisible] = useState(false);
+    const { saveUserSession } = useContext( UserContext);
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            mediaTypes: ['images'],
             allowsEditing: true,
             quality: 1
         });
@@ -27,6 +29,7 @@ const ProfileUpdateViewModel = (user: UserAuth) => {
             onChange('image', result.assets[0].uri);
             setFile(result.assets[0]);
         }
+        setModalVisible(false);
     }
 
     const takePhoto = async () => {
@@ -39,7 +42,7 @@ const ProfileUpdateViewModel = (user: UserAuth) => {
         }      
         // Abre la cámara
         let result = await ImagePicker.launchCameraAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          mediaTypes: ['images'],
           allowsEditing: true,
           quality: 1,
         });      
@@ -47,6 +50,7 @@ const ProfileUpdateViewModel = (user: UserAuth) => {
           onChange('image', result.assets[0].uri);
           setFile(result.assets[0]);
         }
+        setModalVisible(false);
     };
 
     const onChange = (property: string, value: any) => {
@@ -63,9 +67,14 @@ const ProfileUpdateViewModel = (user: UserAuth) => {
             //const response = await RegisterAuthUseCase(values);  
             const response = await UpdateInfoProfileUseCase(values, file!);
             setLoading(false);
-            getUserSession();
-            setSucessMessage(response.body);
-            setTimeout(() => setSucessMessage(''), 100);
+            if ( response.error) {
+                setErrorMessage(response.body);
+                setTimeout(() => setErrorMessage(''), 100);
+            } else {
+                saveUserSession(values);
+                setSucessMessage(response.body);
+                setTimeout(() => setSucessMessage(''), 100);
+            }            
             console.log('RESULT: ' + JSON.stringify(response));
         }        
     }
@@ -96,7 +105,9 @@ const ProfileUpdateViewModel = (user: UserAuth) => {
         takePhoto,
         loading,
         user,
-        onChangeInfoUpdate
+        onChangeInfoUpdate,
+        modalVisible,
+        setModalVisible
     }
 }
 

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Image, Keyboard, Pressable, Text,  View, ScrollView, KeyboardAvoidingView, Platform, Alert, ActivityIndicator } from 'react-native';
+import { Image, Keyboard, Pressable, Text,  View, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { RoundedButton } from '../../components/RoundedButton';
 import useViewModel from './ViewModel';
 import styles from './Styles'
@@ -8,12 +8,15 @@ import Toast from 'react-native-toast-message';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../../App';
 import { MyColors } from '../../theme/AppTheme';
+import { Checkbox } from 'react-native-paper';
+import { CheckBox } from 'react-native-elements';
 
 interface Props extends StackScreenProps<RootStackParamList, 'RegisterScreen'>{};
 
 export const RegisterScreen = ({navigation, route}: Props) => {
 
-    const {name, email, phone, city, password, confirmPassword, sucessMessage,errorMessage, loading, onChange, register, pickImage } = useViewModel();
+    const {name, email, phone, city, password, confirmPassword, sucessMessage,errorMessage, loading, instagram, isChecked,
+            onChange, register, pickImage, setIsChecked, handlePressTerms } = useViewModel();
 
     useEffect(() => {
         if (errorMessage !== '') {
@@ -91,6 +94,15 @@ export const RegisterScreen = ({navigation, route}: Props) => {
                     />
 
                 <CustomTextInput
+                    placeHolder='Instagram'
+                    keyboardType='default'
+                    image={ require('../../../../assets/instagram.png') }
+                    property='instagram'
+                    onChangeText={ onChange }
+                    value={ instagram }
+                    />
+
+                <CustomTextInput
                     placeHolder='Contraseña'
                     keyboardType='default'
                     image={ require('../../../../assets/password.png') }
@@ -109,6 +121,24 @@ export const RegisterScreen = ({navigation, route}: Props) => {
                     value={ confirmPassword }
                     secureTextEntry= {true}
                     />
+                
+                <View
+                    style={styles.checkboxContainer}
+                    >
+                    <View style={styles.checkbox}>
+                        <Checkbox
+                            status={isChecked ? 'checked' : 'unchecked'}
+                            onPress={() => setIsChecked(!isChecked)}
+                            color="blue" // Color cuando está marcado
+                            uncheckedColor="gray" // Color cuando está desmarcado
+                            />
+                    </View>
+                    <Text >Acepto los {''}
+                        <Text style={styles.link} onPress={handlePressTerms}>
+                            términos y condiciones
+                        </Text>
+                    </Text>
+                </View>
 
                 <View style = {{marginTop: 30}}>
                     <RoundedButton text='CONFIRMAR' onPress={() => register()} />

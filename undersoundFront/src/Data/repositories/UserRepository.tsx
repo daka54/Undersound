@@ -5,7 +5,6 @@ import { ResponseAPIUndersound } from "../sources/remote/models/responseApiunder
 import { ApiUndersoundForImage } from "../sources/remote/api/ApiUndersound";
 import { AxiosError } from "axios";
 import mime from 'mime';
-import { ImagePickerAsset } from 'expo-image-picker';
 
 export class UserRepositoryImpl implements UserRepository {
     
@@ -21,7 +20,7 @@ export class UserRepositoryImpl implements UserRepository {
             }
 
             data.append('body', JSON.stringify(user)as any);
-            console.log(JSON.stringify(data));
+            //console.log(JSON.stringify(data));
 
             const response = await ApiUndersoundForImage.post<ResponseAPIUndersound>('/usersauth/update', data);
             return Promise.resolve(response.data);

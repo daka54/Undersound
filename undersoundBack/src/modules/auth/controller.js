@@ -30,9 +30,11 @@ module.exports = function (dbInyected) {
                 city: fullUser[0].city,
                 image: fullUser[0].image,
                 token,
+                loginCount: fullUser[0].loginCount,
                 roles: simplifiedRoles
             }
-    
+            
+            const sumLoginCount = await db.executeSP('SPSumLoginCount', [data.id])
             // Guardar el token en la base de datos
             await db.add(tables.auth, { id: data.id, session_token: token });
             return response; // Retornar el token

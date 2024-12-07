@@ -14,7 +14,7 @@ const RegisterStyles = StyleSheet.create({
     },
     form: {
         width: '100%',
-        height: '68%',
+        height: '83%',
         backgroundColor: MyColors.secondary,
         position: 'absolute',
         bottom: 0,
@@ -60,6 +60,20 @@ const RegisterStyles = StyleSheet.create({
         right: 0,
         left: 0,
         position: 'absolute'
+    },
+    checkboxContainer: {
+        flexDirection: 'row',
+        marginTop: 30,
+        alignItems: 'center'
+    },
+    checkbox: {
+        borderRadius:100,
+        marginRight: 10,
+        borderColor: MyColors.primary,
+    },
+    link: {
+        color: MyColors.primary,
+        textDecorationLine: 'underline',
     }
 
 });

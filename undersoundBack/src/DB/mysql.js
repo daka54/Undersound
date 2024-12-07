@@ -85,6 +85,20 @@ function queryWithJoin(table, joinTable, joinCondition, consult) {
     });
 }
 
+function executeSP(spName, params = []) {
+    return new Promise((resolve, reject) => {
+        // Crear una consulta para llamar al procedimiento almacenado
+        const placeholders = params.map(() => '?').join(', ');
+        const sql = `CALL ${spName}(${placeholders})`;
+
+        // Ejecutar la consulta
+        console.log(sql);        
+        connection.query(sql, params, (error, result) => {
+            return error ? reject(error) : resolve(result[0]); // Los resultados suelen estar en result[0]
+        });
+    });
+}
+
 
 module.exports = {
     getById,
@@ -93,4 +107,5 @@ module.exports = {
     deleteUser,
     query,
     queryWithJoin,
+    executeSP
 }
